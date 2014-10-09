@@ -22,43 +22,49 @@
 #  You should have received a copy of the GNU General Public License
 #  along with pyglet_tutorial.  If not, see <http://www.gnu.org/licenses/>
 
-
+import pyglet
 from pyglet import window
 from pyglet import clock
 from pyglet import font
 
 
 class SpaceGameWindow(window.Window):
+    
+    def __init__(self, *args, **kwargs):
 
-	def __init__(self, *args, **kwargs):
-
-		#Let all of the standard stuff pass through
-		window.Window.__init__(self, *args, **kwargs)
-
-
-	def main_loop(self):
-
-		
-		ft = font.load('Tahoma', 20)    #Create a font for our FPS clock
-
-		fps_text = font.Text(ft, y=10)   # object to display the FPS
-
-		while not self.has_exit:
-			self.dispatch_events()
-			self.clear()
-
-			#Tick the clock
-			clock.tick()
-			#Gets fps and draw it
-			fps_text.text = ("fps: %d") % (clock.get_fps())
-			fps_text.draw()
-
-			self.flip()
-
+        #Let all of the arguments pass through
+        self.win = window.Window.__init__(self, *args, **kwargs)
+        self.setup()
+        
+    def setup(self):
+        
+        clock.schedule_interval(self.update, 1.0/30) # update at FPS of Hz
+        
+        # setting text objects
+        ft = font.load('Tahoma', 20)    #Create a font for our FPS clock
+        self.fpstext = font.Text(ft, y=10)   # object to display the FPS
+        
+        
+    def update(self, dt):
+        pass
+    
+    def on_draw(self):
+        self.clear() # clearing buffer
+        clock.tick() # ticking the clock
+        
+        # showing FPS
+        self.fpstext.text = "fps: %d" % clock.get_fps()
+        self.fpstext.draw()
+        
+        
+        
+        # flipping
+        self.flip()
+        
 
 
 if __name__ == "__main__":
-	space = SpaceGameWindow(width=1200, height=800, caption="Space Invaders !!", resizable=True)
-	space.main_loop()
+	win = SpaceGameWindow(caption="Space Invaders !!")
+	pyglet.app.run()
 
 
