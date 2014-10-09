@@ -3,24 +3,24 @@
 #
 #  game.py
 #  
-#  Copyright 2014 Guillermo Aguilar <guille@schneebeere>
+#  Copyright (C) 2014 Guillermo Aguilar <gmo.aguilar.c@gmail.com>
 #  
-#  This program is free software; you can redistribute it and/or modify
+#  Based partially on PyGletSpace.py
+#  Copyright (C) 2007 Mark Mruss <selsine@gmail.com>
+#  http://www.learningpython.com
+#
+#  Pyglet_tutorial is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
+#  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
-#  
-#  This program is distributed in the hope that it will be useful,
+#
+#  Pyglet_tutorial is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
-#  
-#  
+#  along with pyglet_tutorial.  If not, see <http://www.gnu.org/licenses/>
 
 
 from pyglet import window
@@ -38,10 +38,10 @@ class SpaceGameWindow(window.Window):
 
 	def main_loop(self):
 
-		#Create a font for our FPS clock
-		ft = font.load('Arial', 28)
-		#The pyglet.font.Text object to display the FPS
-		fps_text = font.Text(ft, y=10)
+		
+		ft = font.load('Tahoma', 20)    #Create a font for our FPS clock
+
+		fps_text = font.Text(ft, y=10)   # object to display the FPS
 
 		while not self.has_exit:
 			self.dispatch_events()
