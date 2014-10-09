@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  game.py
+#  spacegame.py
 #  
 #  Copyright (C) 2014 Guillermo Aguilar <gmo.aguilar.c@gmail.com>
 #  
@@ -9,12 +9,12 @@
 #  Copyright (C) 2007 Mark Mruss <selsine@gmail.com>
 #  http://www.learningpython.com
 #
-#  Pyglet_tutorial is free software: you can redistribute it and/or modify
+#  SpaceGame is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  Pyglet_tutorial is distributed in the hope that it will be useful,
+#  SpaceGame is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
@@ -30,6 +30,7 @@ from pyglet import font
 from pyglet.window import key 
 
 
+###############################################################################
 class SpaceGame(window.Window):
     
     def __init__(self, *args, **kwargs):
@@ -50,6 +51,9 @@ class SpaceGame(window.Window):
         # setting text objects
         ft = font.load('Tahoma', 20)    #Create a font for our FPS clock
         self.fpstext = font.Text(ft, y=10)   # object to display the FPS
+        self.score = font.Text(ft, x=self.width, y=self.height, 
+                               halign=pyglet.font.Text.RIGHT, 
+                               valign=pyglet.font.Text.TOP)
         
         # reading and saving images
         self.spaceship_image = pyglet.image.load('images/ship2.png')
@@ -90,6 +94,9 @@ class SpaceGame(window.Window):
         # showing FPS
         self.fpstext.text = "fps: %d" % clock.get_fps()
         self.fpstext.draw()
+        
+        self.score.text = "# Killed: %d" % self.spaceship.kills
+        self.score.draw()
         
         # drawing objects of the game
         self.spaceship.draw()
