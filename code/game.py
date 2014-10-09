@@ -30,7 +30,7 @@ from pyglet import font
 from pyglet.window import key 
 
 
-class SpaceGameWindow(window.Window):
+class SpaceGame(window.Window):
     
     def __init__(self, *args, **kwargs):
 
@@ -54,12 +54,12 @@ class SpaceGameWindow(window.Window):
         # reading and saving images
         self.spaceship_image = pyglet.image.load('images/ship2.png')
         self.alien_image = pyglet.image.load('images/monster.png')
-        
+        self.bullet_image = pyglet.image.load('images/bullet_white.png')
         # create one spaceship
         self.spaceship = Spaceship(self.spaceship_image, x=50, y=50)
         
         self.aliens=[] # list of Alien objects
-        
+        self.bullets=[] # list of Bullet objects
         
     def create_alien(self, dt):
         
@@ -69,20 +69,19 @@ class SpaceGameWindow(window.Window):
         
     def update(self, dt):
         
-        toremove=[]
-            
         # updating aliens
         for alien in self.aliens:
             alien.update()
             if alien.dead:
-                toremove.append(alien)
-    
-        # removing necesary aliens
-        for a in toremove:
-            self.aliens.remove(a)
+                self.aliens.remove(alien)
+        
+        # updating bullets
+        for bullet in self.bullets:
+            bullet.update()
+            if bullet.dead:
+                self.bullets.remove(bullet)
             
-            
-            
+        
 
     def on_draw(self):
         self.clear() # clearing buffer
@@ -96,10 +95,11 @@ class SpaceGameWindow(window.Window):
         self.spaceship.draw()
         for alien in self.aliens:
             alien.draw()
+        for bullet in self.bullets:
+            bullet.draw()
             
         # flipping
         self.flip()
-    
     
     
     ## Event handlers
@@ -118,7 +118,13 @@ class SpaceGameWindow(window.Window):
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         self.spaceship.x = x
+        
+    def on_mouse_press(self, x, y, button, modifiers):
 
+        if (button == 1):
+            self.bullets.append(Bullet(self.bullet_image, self.spaceship, 
+                                       self.height, x=self.spaceship.x + self.spaceship.width/2.0,
+                                       y=self.spaceship.y + self.spaceship.height/2.0))
 
 
 
@@ -161,11 +167,28 @@ class Alien(pyglet.sprite.Sprite):
             self.x_move_count = 0
             self.set_x_velocity()
    
-  
+###############################################################################    
+class Bullet(pyglet.sprite.Sprite):
+
+	def __init__(self, image_data, parent_ship, screen_top, **kwargs):
+          self.dead=False
+          self.velocity = 5
+          self.screen_top = screen_top
+          self.parent_ship = parent_ship
+          pyglet.sprite.Sprite.__init__(self, image_data, **kwargs)
+
+	def update(self):
+		self.y += self.velocity
+		if (self.y > self.screen_top):
+			self.dead = True
+
+	def on_kill(self):
+		self.parent_ship.on_kill()    # when hitting an alien, call on_kill to update spaceship counter
+   
 ###############################################################################
   
 if __name__ == "__main__":
-	win = SpaceGameWindow(caption="Space Invaders !!", height=800, width=800)
+	win = SpaceGame(caption="Space Invaders !!", height=800, width=800)
 	pyglet.app.run()
 
 
