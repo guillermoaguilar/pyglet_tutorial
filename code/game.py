@@ -22,10 +22,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with pyglet_tutorial.  If not, see <http://www.gnu.org/licenses/>
 
+import random
 import pyglet
 from pyglet import window
 from pyglet import clock
 from pyglet import font
+from pyglet.window import key 
 
 
 class SpaceGameWindow(window.Window):
@@ -36,18 +38,52 @@ class SpaceGameWindow(window.Window):
         self.win = window.Window.__init__(self, *args, **kwargs)
         self.setup()
         
+        self.maxaliens = 50
+        
     def setup(self):
         
+        clock.schedule_interval(self.create_alien, 0.3)
         clock.schedule_interval(self.update, 1.0/30) # update at FPS of Hz
+        
+        #clock.set_fps_limit(30)
         
         # setting text objects
         ft = font.load('Tahoma', 20)    #Create a font for our FPS clock
         self.fpstext = font.Text(ft, y=10)   # object to display the FPS
         
+        # reading and saving images
+        self.spaceship_image = pyglet.image.load('images/ship2.png')
+        self.alien_image = pyglet.image.load('images/monster.png')
+        
+        # create one spaceship
+        self.spaceship = Spaceship(self.spaceship_image, x=50, y=50)
+        
+        self.aliens=[] # list of Alien objects
+        
+        
+    def create_alien(self, dt):
+        
+        if len(self.aliens) < self.maxaliens:
+            self.aliens.append( Alien(self.alien_image, x=random.randint(0, self.width) , y=self.height))
+        
         
     def update(self, dt):
-        pass
+        
+        toremove=[]
+            
+        # updating aliens
+        for alien in self.aliens:
+            alien.update()
+            if alien.dead:
+                toremove.append(alien)
     
+        # removing necesary aliens
+        for a in toremove:
+            self.aliens.remove(a)
+            
+            
+            
+
     def on_draw(self):
         self.clear() # clearing buffer
         clock.tick() # ticking the clock
@@ -56,15 +92,80 @@ class SpaceGameWindow(window.Window):
         self.fpstext.text = "fps: %d" % clock.get_fps()
         self.fpstext.draw()
         
-        
-        
+        # drawing objects of the game
+        self.spaceship.draw()
+        for alien in self.aliens:
+            alien.draw()
+            
         # flipping
         self.flip()
+    
+    
+    
+    ## Event handlers
+    def on_key_press(self, symbol, modifiers):
         
+        if symbol == key.ESCAPE:
+            self.dispatch_event('on_close')  
+            
+        elif symbol == key.LEFT:
+            self.spaceship.x -= 10
+        elif symbol == key.RIGHT:
+            self.spaceship.x += 10
+            
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.spaceship.x = x
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        self.spaceship.x = x
 
 
+
+
+###############################################################################
+class Spaceship(pyglet.sprite.Sprite):
+
+	def __init__(self, *args, **kwargs):
+         pyglet.sprite.Sprite.__init__(self, *args, **kwargs)
+         self.kills = 0
+        
+	def on_kill(self):
+		self.kills += 1
+
+
+###############################################################################    
+class Alien(pyglet.sprite.Sprite):
+
+    def __init__(self, *args, **kwargs):
+        pyglet.sprite.Sprite.__init__(self, *args, **kwargs)
+        self.y_velocity = 5
+        self.set_x_velocity()
+        self.x_move_count = 0
+        self.dead=False
+
+    def set_x_velocity(self):
+        self.x_velocity = random.randint(-3,3)
+
+    def update(self):
+        # update position
+        self.y -= self.y_velocity
+        self.x += self.x_velocity
+        # and counter
+        self.x_move_count += 1
+        
+        #Have we gone beneath the botton of the screen?
+        if (self.y < 0):
+            self.dead = True
+            
+        if (self.x_move_count >=30):
+            self.x_move_count = 0
+            self.set_x_velocity()
+   
+  
+###############################################################################
+  
 if __name__ == "__main__":
-	win = SpaceGameWindow(caption="Space Invaders !!")
+	win = SpaceGameWindow(caption="Space Invaders !!", height=800, width=800)
 	pyglet.app.run()
 
 
