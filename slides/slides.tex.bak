@@ -1,0 +1,159 @@
+% 2014
+% Guillermo Aguilar.
+% 
+\documentclass[10pt]{beamer}
+\mode<presentation>
+{
+  \usetheme{Frankfurt}
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+\graphicspath{{figures/}}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage{graphicx,color,psfrag}
+
+
+\title
+{}
+
+\subtitle
+{} % (optional)
+
+\author % (optional, use only with lots of authors)
+{}
+
+
+\institute[MKP] % (optional, but mostly needed)
+{}
+
+\date
+{\today}
+
+\subject{Talks}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+
+%%
+\begin{frame}{Step 1: Establishing a window}
+\center
+
+\begin{itemize}
+\item Test that pyglet can indeed start a window. For that, run the file \textit{game1.py} 
+
+\item Examine the code
+\begin{itemize}
+
+\item You have two class definitions: \textbf{SpaceGame} and \textbf{Spaceship}. What do these represent? 
+
+\item How do the program execution work in pyglet?
+
+\item How do the FPS text is created and drawn? 
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+%%
+\begin{frame}{Step 2: Draw the spaceship}
+
+\begin{itemize}
+
+\item You need to first load the image of the spaceship. Use \textsl{pyglet.image.load}.
+\item Then, instantiate an \textbf{Spaceship} object passing the image data as an argument. You can also pass variables $x$ and $y$.
+Write these two commands in the initialization method of the object \textbf{SpaceGame}.
+\item Add a call for drawing the spaceship in the draw method of \textbf{SpaceGame}.
+\item Run it !!
+
+\end{itemize}
+\end{frame}
+
+%%
+\begin{frame}{Step 3: Moving the spaceship}
+
+\begin{itemize}
+\item Make the spaceship location change according to the mouse position.
+\item For that, use the event handler \textbf{mouse motion} to update the position of the spaceship object.
+
+\item Lock the spaceship at y=50, so that it can only move left-right with the mouse.
+
+\end{itemize}
+
+\textit{game2.py}
+
+\end{frame}
+
+
+%%
+\begin{frame}{Step 4: Adding the alien invaders}
+
+\begin{itemize}
+
+\item Similarly to the spaceship, first you need to load the image of an alien.
+
+\item Create a new class \textbf{Alien}, copying the definition from the \textbf{Spaceship} class. 
+
+\item Similarly, instantiate a new Alien object in the game, and draw it. 
+
+\item Add a velocity variable to the Alien, and add an update() method that will be called at every frame step. Inside the update method, update the position of the alien, so that moves downwards.
+
+\end{itemize}
+
+At this point (\textit{game3.py}), you have a spaceship and an alien in your game. But this is pretty boring, isn't it?
+We need to add some interaction and movement! We need more aliens!
+
+\end{frame}
+
+%%
+\begin{frame}{Step 5: Adding many aliens}
+
+\begin{itemize}
+\item Initialize an empty list aliens in the init method. 
+
+\item Create a function createalien() that appends to the aliens list one alien, at random horizontal positions.
+
+\item Add a call to clock.scheduleinterval , calling the createalien() function. 
+
+\item On the update method, update every alien from the list.
+
+\item On the draw method, draw every alien.
+
+\item And make sure that the alien is cleared when approaches the bottom of the screen. For that, add a 'dead' variable to the Alien object, and at every update check if the alien is dead.
+If so, remove it from the list.
+
+\item Optional: to make it more variable, set the horizontal velocity random for each alien.
+\end{itemize}
+
+\textit{game4py}
+
+\end{frame}
+
+%%
+\begin{frame}{Step 6: Adding bullets, and collision detection}
+
+Finally, we need to add the bullets that the spaceship will shoot. And we'll check that if an alien receives a bullet, it's killed!
+
+\begin{itemize}
+
+
+\item Create a bullet class definition, and add the bullet image similarly as before. Also create an empty list of bullets.
+
+\item Bullets are now created every time the user clicks. Add this on the handle event on mouse press.
+
+\item Make sure bullets are created in the position of the spaceship. 
+
+\item Write a distance function outside the class definition. Use this function inside the update method of the game, to check and detect collisions between aliens and bullets. If detected, set dead True both. And also use it to detect a collision between an alien and the spaceship. If detected, terminate the game.
+
+\end{itemize}
+
+\end{H
+\end{document}
+
+
