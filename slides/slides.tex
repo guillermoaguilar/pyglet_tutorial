@@ -16,30 +16,62 @@
 
 
 \title
-{}
+{Writing fun games in python}
 
 \subtitle
-{} % (optional)
+{and learning object-oriented programming during the process} % (optional)
 
 \author % (optional, use only with lots of authors)
-{}
-
-
+{Guillermo Aguilar}
 \institute[MKP] % (optional, but mostly needed)
 {}
 
 \date
-{\today}
+{October 14th, 2014}
 
 \subject{Talks}
 
 \begin{document}
-
+%%
 \begin{frame}
   \titlepage
 \end{frame}
 
+%%
+\begin{frame}{Graphics on python}
+\center
+\includegraphics[scale=0.4]{Pygame_logo.png} \quad \quad
+\includegraphics[scale=0.4]{Pyglet-Logo.jpg}
+\vfill
+\huge{PyOpenGL}
+\end{frame}
 
+%%
+\begin{frame}{Game engines}
+\center
+\includegraphics[scale=0.1]{Unity-Logo.jpg} \quad \quad
+\includegraphics[scale=0.4]{blender-plain.png} \\[20pt]
+and hundreds more.. \href{http://en.wikipedia.org/wiki/List_of_game_engines}{\beamergotobutton{Link}}
+
+
+\end{frame}
+
+%%
+\begin{frame}{}
+\center
+\Huge{Let's program!}
+
+
+\end{frame}
+
+%%
+\begin{frame}{Step 0: Clone the repository}
+
+Clone the repository\\[10pt]
+
+git clone https://github.com/guillermoaguilar/pyglet\_tutorial.git
+
+\end{frame}
 
 %%
 \begin{frame}{Step 1: Establishing a window}
@@ -67,7 +99,7 @@
 \begin{itemize}
 
 \item You need to first load the image of the spaceship. Use \textsl{pyglet.image.load}.
-\item Then, instantiate an \textbf{Spaceship} object passing the image data as an argument. You can also pass variables $x$ and $y$.
+\item Then, instantiate an \textbf{Spaceship} object passing the image data as an argument. You can also pass variables \textit{x} and \textit{y}.
 Write these two commands in the initialization method of the object \textbf{SpaceGame}.
 \item Add a call for drawing the spaceship in the draw method of \textbf{SpaceGame}.
 \item Run it !!
@@ -80,13 +112,15 @@ Write these two commands in the initialization method of the object \textbf{Spac
 
 \begin{itemize}
 \item Make the spaceship location change according to the mouse position.
-\item For that, use the event handler \textbf{mouse motion} to update the position of the spaceship object.
+\item For that, use the event handler \textit{on\_mouse\_motion} to update the position of the spaceship object.
 
-\item Lock the spaceship at y=50, so that it can only move left-right with the mouse.
+\item Lock the spaceship at \textit{y=50}, so that it can only move left-right with the mouse.
 
 \end{itemize}
 
-\textit{game2.py}
+\vfill
+\small{
+Solution until this point: \textit{game2.py} }
 
 \end{frame}
 
@@ -100,9 +134,9 @@ Write these two commands in the initialization method of the object \textbf{Spac
 
 \item Create a new class \textbf{Alien}, copying the definition from the \textbf{Spaceship} class. 
 
-\item Similarly, instantiate a new Alien object in the game, and draw it. 
+\item Similarly, instantiate a new \textbf{Alien} object in the game, and draw it. 
 
-\item Add a velocity variable to the Alien, and add an update() method that will be called at every frame step. Inside the update method, update the position of the alien, so that moves downwards.
+\item Add a velocity variable to the \textbf{Alien}, and add an update() method that will be called at every frame step. Inside the update method, update the position of the alien, so that moves downwards.
 
 \end{itemize}
 
@@ -115,23 +149,25 @@ We need to add some interaction and movement! We need more aliens!
 \begin{frame}{Step 5: Adding many aliens}
 
 \begin{itemize}
-\item Initialize an empty list aliens in the init method. 
+\item Initialize an empty list aliens in the \textit(\_\_init\_\_) method of \textbf{SpaceGame}
 
-\item Create a function createalien() that appends to the aliens list one alien, at random horizontal positions.
+\item Create a function \textit{create\_alien()} that appends to the aliens list one alien, at random horizontal positions.
 
-\item Add a call to clock.scheduleinterval , calling the createalien() function. 
+\item Add a call to \textit{clock.schedule\_interval}, calling the \textit{create\_alien()} function. 
 
 \item On the update method, update every alien from the list.
 
 \item On the draw method, draw every alien.
 
-\item And make sure that the alien is cleared when approaches the bottom of the screen. For that, add a 'dead' variable to the Alien object, and at every update check if the alien is dead.
+\item And make sure that the alien is cleared when approaches the bottom of the screen. For that, add a \textit{dead} variable to the \textbf{Alien} object, and at every update check if the alien is dead.
 If so, remove it from the list.
 
-\item Optional: to make it more variable, set the horizontal velocity random for each alien.
+\item To make it less boring, set the horizontal velocity random for each alien.
 \end{itemize}
 
-\textit{game4py}
+\vfill
+\small{
+Solution until this point: \textit{game4.py} }
 
 \end{frame}
 
@@ -142,33 +178,43 @@ Finally, we need to add the bullets that the spaceship will shoot. And we'll che
 
 \begin{itemize}
 
-\item Create a bullet class definition, and add the bullet image similarly as before. Also create an empty list of bullets.
+\item Create a \textbf{Bullet} class definition, and add the bullet image similarly as before. Also create an empty list of bullets.
 
-\item Bullets are now created every time the user clicks. Add this on the handle event on mouse press.
+\item Bullets are now created every time the user clicks. Add this on the handle event \textit{on\_mouse\_press}.
 
-\item Make sure bullets are created in the position of the spaceship. 
+\item Make sure bullets are created where the spaceship is located. 
 
-\item Write a distance function outside the class definition. Use this function inside the update method of the game, to check and detect collisions between aliens and bullets. If detected, set dead True both. And also use it to detect a collision between an alien and the spaceship. If detected, terminate the game.
+\item Write a distance function outside the class definition. Use this function inside the update method of the game, to check and detect collisions between aliens and bullets. If detected, set \textit{dead=True} to both. And also use it to detect a collision between an alien and the spaceship. If detected, terminate the game.
 
-\item Finally, add a text on the upper right corner that keeps track of the number of aliens killed. Add an atribute to the Spaceship object that keeps track.
+\item Finally, add a text on the upper right corner that keeps track of the number of aliens killed. Add an attribute to the \textbf{Spaceship} object that keeps track of that.
 
 \end{itemize}
 
+\vfill
+\small{Final version! : \textit{game5.py} }
 \end{frame}
 
 %%
-\begin{frame}{Optinal modifications!}
+\begin{frame}{Optional modifications}
 
 \begin{itemize}
 
-\item Modify the alien class so that after x steps of motion, changes its x velocity randomly.
+\item Modify the alien class so that after x steps of motion, changes its x velocity randomly (as in \textit{game.py})
 
 \item Instead of having a list of objects for the bullets and aliens, use the capabilities of Batch Sprites on pyglet. This should improve performance.
 
 \item Add a collision image and a sound every time a collision is detected. Add sound for the shooting!
 
+\item Whatever you can think of !
 
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}{}
+\center
+\huge{Have fun coding!!}
+
 \end{frame}
 
 \end{document}
