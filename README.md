@@ -5,6 +5,7 @@
 
 * This repository contains a tutorial for beginners on pyglet. 
 * It consists of an example game, space invaders-like, and instructions (as slides) that explains the use of pyglet and how to program this game.
+* You can watch the video of the tutorial done at the Pyladies Berlin [here](https://www.youtube.com/watch?v=wrWwD6DcSIs)
 
 
 ### Dependencies ###
