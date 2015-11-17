@@ -102,7 +102,7 @@ class SpaceGame(window.Window):
         # checking ship - alien collision
         for alien in self.aliens:
             if distance(alien, self.spaceship) < (alien.width/2+ self.spaceship.width/2):
-                print "Game Over"
+                print("Game Over")
                 self.dispatch_event('on_close') 
 
 
