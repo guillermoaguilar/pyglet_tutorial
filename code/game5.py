@@ -67,7 +67,7 @@ class SpaceGame(window.Window):
                     self.spaceship.kills += 1
             
             if distance(alien, self.spaceship) < (alien.height/2 + self.spaceship.height/2):
-                print "Game Over"
+                print("Game Over")
                 self.dispatch_event('on_close') 
                     
 
